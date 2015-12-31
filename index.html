@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TwitchTV</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <script type="text/javascript" src="$WEBAPIS/webapis/webapis.js"></script>
+    <script src="js/jquery-1.11.0.js"></script>
+    <script type='text/javascript' src='language/language.js'></script>
+    <script type='text/javascript' src='js/Browser.js'></script>
+    <script type='text/javascript' src='js/Channel.js'></script>
+    <script>
+    	var scene = 'browser';
+        $(document).ready(function(){
+            browser.init();
+            tizen.systeminfo.getPropertyValue(
+                    "LOCALE", 
+                    function (locale) {
+                        browser.logging(locale.language);
+                  	},
+                  	function (error) {
+                        console.log(error);
+                   }
+             ); 
+        });
+    </script>
+</head>
+
+<body>
+<object type='application/avplayer' id="pluginObjectPlayer" border=0></object>
+<div id="logging" style="color:#fff;font-size:25px;position:absolute;top:0;left:0;z-index:100;width:200px;height:auto;"></div>
+<div class="overlay">
+    <div id="dialog_loading">
+        <div class="spinner" style="display: inline-block;">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+        <div id="dialog_loading_text" style="display: inline-block; font-size: 200%; color: white;"></div>
+    </div>
+</div>
+<img style="float: left; width: 8%; padding-left: 3%; padding-top: 2.0%; padding-bottom: 1.5%;" src="images/twitchlogo.png"/>
+<div id="browser">
+    <div style="float: right; padding-top: 3.0%;">
+        <div id="tip_icon_channels" class="tip_icon" style="background-color: #ff3333">A</div>
+        <div class="tip_label label_channels">STR_CHANNELS</div>
+        <div id="tip_icon_games"  class="tip_icon" style="background-color: #55d459">B</div>
+        <div class="tip_label label_games">STR_GAMES</div>
+        <div id="tip_icon_open"  class="tip_icon" style="background-color: #eded00">C</div>
+        <div class="tip_label label_open">STR_OPEN</div>
+        <div id="tip_icon_refresh"  class="tip_icon" style="background-color: #3d81f2">D</div>
+        <div class="tip_label label_refresh">STR_REFRESH</div>
+    </div>
+    <table id="stream_table" style="width: 100%; padding-top: 4%; padding-left: 2%; padding-right: 2%; border: 0; table-layout: fixed;">
+
+    </table>
+
+    <div id="streamname_frame" class="openchannel">
+        <input id="streamname_input" class="channelname label_placeholder_open" type="text" placeholder="STR_PLACEHOLDER_OPEN" />
+        <div id="streamname_button" class="button_go label_open">STR_OPEN</div>
+    </div>
+</div>
+<div id="channel">
+    <div id="scene_channel_panel" style="background-color: #6545a5;display: block;height: auto;right: 5px;position: absolute;width: 25%;z-index: 2;">
+        <div style="display: block;float: left;height: 8%;margin: 0 auto;padding-bottom: 1.5%;padding-left: 15%;padding-top: 9%;position: relative;width: 80%;">
+            <img id="stream_info_icon" style="display: inline-block; width: 20%;" src=""/>
+            <div style="color: white;display: inline-block;margin-left: 0;margin-top: 1%;text-align: center;vertical-align: top;width: 65%;">
+                <div id="stream_info_name" style="font-size: 120%; padding-bottom: 4%; color:#fff"></div>
+                <div id="stream_info_viewer" style="font-size: 100%; color: rgba(255, 255, 255, 0.85)"></div>
+                <div id="totalTime"></div>
+            </div>
+        </div>
+        <div style="background-color: #fff;display: block;float: left;height: auto;margin-top: 2%;padding-bottom: 40px;position: relative;width: 100%;">
+            <div style="color: #000;display: block;float: left;font-size: 90%;height: 85px;margin: 0 auto;padding: 0 5%;position: relative;text-align: center;vertical-align: middle;width: 90%;">
+                <p id="stream_info_title"></p>
+            </div>
+            <div style="display: block;float: left;font-size: 130%;height: 80px;line-height: 30px;margin: 0 auto;padding-top: 6%;position: relative;width: 100%;">
+                <div style="background-color: rgba(0, 0, 0, 0.4);color: black;display: block;float: left;font-weight: 100;height: 55%;margin: 0 auto 0 65px;padding-top: 15px;position: relative;width: 65%;">
+                    <div style="background-color: rgba(255, 255, 255, 0.35);display: block;float: left;margin-left: 5px;position: relative;text-align: center;width: 41%;" id="label_quality">STR_QUALITY</div>
+                    <div id="quality_name" style="display: block;float: right;position: relative;text-align: center;width: 52%;"></div>
+                </div>
+                <div style="display: block;float: left;height: 42px;width: 15%;">
+                    <div style="display: block;float: left;height: 82%;width: 100%">
+                        <div id="quality_arrow_up"
+                             style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-bottom: 8px solid rgba(255, 255, 255, 0.8);"></div>
+                        <div id="quality_arrow_down"
+                             style="border-left: 6px solid transparent;border-right: 6px solid transparent;border-top: 8px solid rgba(255, 255, 255, 0.8);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- div style="position: absolute; top: 50%; width: 100%; height: 50%; background-color: white;"-->
+        <!-- Future chat browser-->
+    </div>
+</div>
+<div id="loading" style="display:none;font-size:60px;color:red;text-align:center;position:absolute; z-index:200; left: 40%;">
+    <span>Loading... </span><span id="percent">0</span><span>%</span>
+</div>
+</body>
+
+</html>
