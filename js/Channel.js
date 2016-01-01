@@ -51,7 +51,6 @@ var channel = new function(){
 			},
 			onbufferingcomplete : function() {
 				console.log("Buffering complete.");
-				channel.hideLoading();
 				channel.showPlayer();
 			},
 			oncurrentplaytime : function(currentTime) {
@@ -153,6 +152,7 @@ var channel = new function(){
 		scene = 'browser';
 		$('#channel').hide();
 		$("#browser").show();
+		$("#pluginObjectPlayer").css('display','none');
 		browser.switchMode(browser.modeINIT);
 	};
 
@@ -195,6 +195,7 @@ var channel = new function(){
 	this.init = function ()
 	{	
 		$('#channel').show();
+		this.showPlayer();
 		this.handleFocus();
 	};
 
@@ -322,7 +323,7 @@ var channel = new function(){
 		this.qualityPlaying = this.quality;
 		this.qualityPlayingIndex = this.qualityIndex;
 		this.videoOpen(this.playingUrl);
-		$('#pluginObjectPlayer').show();
+		//$('#pluginObjectPlayer').show();
 		this.prepare();
 		this.playVideo();
 	};
@@ -402,7 +403,6 @@ var channel = new function(){
 		console.log('Play Video');
 
 		try {
-			this.showPlayer();
 			webapis.avplay.play();
 			console.log("Current state: " + webapis.avplay.getState());
 			browser.logging($('#pluginObjectPlayer').css('display'));
@@ -481,8 +481,9 @@ var channel = new function(){
 
 	this.showPlayer = function()
 	{
-		$(".overlay").hide();
-		$('#pluginObjectPlayer').show();
+		$(".overlay").css('display','none');
+		$("#pluginObjectPlayer").css('display','inline-block');
+		this.hideLoading();
 	};
 
 	function addCommas(nStr)

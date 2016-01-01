@@ -463,9 +463,9 @@ var browser = new function(){
 	{
 		$(window).scrollTop(0);
 		scene = 'channel';
-		//this.clean();
+		this.clean();
 		$('#browser').hide();
-		//channel.showDialog();
+		channel.showDialog();
 		channel.go = true;
 		channel.init();
 	};
